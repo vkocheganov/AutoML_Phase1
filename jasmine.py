@@ -3,81 +3,59 @@ __author__ = 'vmkochegvirtual'
 from sklearn import ensemble, linear_model
 from sklearn.cross_validation import KFold
 import time
-
+from calc_cv_scores import Calc_CV_ERROR
 from libs.libscores import *
 from libs.data_io import *
 
+from time import gmtime, strftime
+from calc_cv_scores import Calc_CV_ERROR,make_cross_validation
+from preprocess import Preprocess_data,GBT_params
+from utils import make_classification
+print(strftime("%Y-%m-%d %H:%M:%S"))
 
-def Calc_CV_ERROR(classifier, data, solution, cv_folds):
-    print("\n")
-    cv_scores = np.zeros(cv_folds)
-
-    kf=KFold(len(solution), cv_folds, indices=True)
-    cv_iter = 0
-    for cv_train, cv_test in kf:
-        print("cv iteration %d" % cv_iter)
-
-    #     clf2.fit(data[cv_train], solution[cv_train])
-    #     clf3.fit(data[cv_train], solution[cv_train])
-    #     cv_test_pred = (clf2.predict_proba(data[cv_test])[:,1] + clf3.predict_proba(data[cv_test])[:,1])/2
-
-        #    clf1.fit(train_data[cv_train], labels[cv_train])
-        #     clf2.fit(data[cv_train], solution[cv_train])
-        #     clf3.fit(data[cv_train], solution[cv_train])
-        #    cv_test_pred = (clf1.predict_proba(train_data[cv_test])[:,1] + clf2.predict_proba(train_data[cv_test])[:,1] + clf3.predict_proba(train_data[cv_test])[:,1])/3
-        classifier.fit(data[cv_train], solution[cv_train])
-        cv_test_pred = classifier.predict_proba(data[cv_test])[:,1]
-        cv_scores[cv_iter] = bac_metric(cv_test_pred, solution[cv_test], task='binary.classification')
-        cv_iter += 1;
-
-    return cv_scores.mean()
-
-
-np.set_printoptions(suppress=True)
-
+#-------------------------------
 print("start loading")
 start_time = time.time()
 train_data = np.loadtxt('input/jasmine/jasmine_train.data')
 test_data = np.loadtxt('input/jasmine/jasmine_test.data')
 valid_data = np.loadtxt('input/jasmine/jasmine_valid.data')
 labels = np.loadtxt('input/jasmine/jasmine_train.solution')
-print("end loading , %d" % (start_time - time.time()))
+print("end loading , %d seconds" % (start_time - time.time()))
 
-forest_feat =(train_data.shape[1])**0.5
-#clf2 = linear_model.LogisticRegression(C=100.)
-#clf3 = linear_model.LogisticRegression(C=1.)
-clf4 = ensemble.GradientBoostingClassifier(n_estimators=15000, max_features=int(forest_feat), learning_rate=0.003, max_depth=10)
-#exit(1)
-#clf5 = ensemble.RandomForestClassifier(n_estimators=1000, max_depth=4)
-print ensemble
-print train_data.shape[1]
-Nfolds = 5
+(train_data,valid_data,test_data)=Preprocess_data(train_data, valid_data, test_data, labels)
+n_features=train_data.shape[1]
 
-#print Calc_CV_ERROR(clf4,train_data, labels, Nfolds)
-#exit (1)
+######################### Make validation/test predictions
 
-
-
+# gbt_params=GBT_params(n_iterations=5000,depth=7, learning_rate=0.01,subsample_part=0.6,n_max_features=(n_features/2))
+# gbt_params.print_params()
+#
+# start_time = time.time()
+# make_classification(gbt_params, train_data, labels, valid_data, test_data, 'res/jasmine_valid_001.predict', 'res/jasmine_test_001.predict')
+# print("build ended %d seconds" % (time.time() - start_time))
+#
+# exit(1)
 
 
+########################## Make cross validation
+gbt_params_begin=GBT_params(n_iterations=3000,depth=5, learning_rate=0.005,subsample_part=0.7,n_max_features=50)
+gbt_params_mult_factor=GBT_params(n_iterations=1,depth=2, learning_rate=2,subsample_part=1,n_max_features=1)
+gbt_params_add_factor=GBT_params(n_iterations=2000,depth=1, learning_rate=0,subsample_part=1,n_max_features=50)
+gbt_params_num_iter=GBT_params(n_iterations=3,depth=3, learning_rate=3,subsample_part=1,n_max_features=3)
+# gbt_params_begin=GBT_params(n_iterations=10000,depth=5, learning_rate=0.01,subsample_part=0.8,n_max_features=(n_features**0.5))
+# gbt_params_mult_factor=GBT_params(n_iterations=1,depth=1, learning_rate=2,subsample_part=1,n_max_features=1)
+# gbt_params_add_factor=GBT_params(n_iterations=3000,depth=2, learning_rate=0,subsample_part=1,n_max_features=0)
+# gbt_params_num_iter=GBT_params(n_iterations=3,depth=3, learning_rate=3,subsample_part=1,n_max_features=1)
+#gbt_params_num_iter=GBT_params(n_iterations=1,depth=1, learning_rate=1,subsample_part=1,n_max_features=1)
 
+cv_folds=5
+(cv_res,cv_times)=make_cross_validation(train_data, labels, cv_folds, gbt_params_begin, gbt_params_mult_factor, gbt_params_add_factor, gbt_params_num_iter)
 
+print("Cross Validation is complete")
+print ("cv_res: ", cv_res)
+print("cv_times: ", cv_times)
 
+np.savetxt('res/jasmine.crossvalidation_res1', cv_res, '%1.5f')
+np.savetxt('res/jasmine.crossvalidation_times1', cv_times, '%1.5f')
+exit(1)
 
-
-
-
-
-print("model building")
-start_time = time.time()
-clf4.fit(train_data, labels)
-print("build ended %d seconds" % (time.time() - start_time))
-
-print("prediction")
-start_time = time.time()
-test_preds = clf4.predict_proba(test_data)[:,1]
-valid_preds = clf4.predict_proba(valid_data)[:,1]
-print("prediction ended %d" % (time.time() - start_time))
-
-np.savetxt('res/jasmine_test_001.predict', test_preds, '%1.5f')
-np.savetxt('res/jasmine_valid_001.predict', valid_preds, '%1.5f')
