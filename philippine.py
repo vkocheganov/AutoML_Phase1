@@ -1,5 +1,6 @@
 __author__ = 'vmkochegvirtual'
 
+from sklearn.ensemble import ExtraTreesClassifier
 from sklearn import ensemble, linear_model
 from sklearn.cross_validation import KFold
 import time
@@ -10,7 +11,7 @@ from libs.data_io import *
 
 from time import gmtime, strftime
 from calc_cv_scores import Calc_CV_ERROR
-from preprocess import Preprocess_data,GBT_params
+from preprocess import Preprocess_data,GBT_params, Choose_variables
 from utils import make_classification
 print(strftime("%Y-%m-%d %H:%M:%S"))
 
@@ -26,19 +27,43 @@ valid_data = np.loadtxt('input/philippine/philippine_valid.data')
 labels = np.loadtxt('input/philippine/philippine_train.solution')
 print("end loading , %d" % (start_time - time.time()))
 
-#(train_data,valid_data,test_data)=Preprocess_data(train_data, valid_data, test_data, labels)
-n_features=train_data.shape[1]
+select_clf = ExtraTreesClassifier()
+print(train_data.shape)
+select_clf.fit(train_data, labels)
+train_data = select_clf.transform(train_data)
+valid_data = select_clf.transform(valid_data)
+test_data = select_clf.transform(test_data)
+print(np.sort(select_clf.feature_importances_))
+print(train_data.shape)
+
+# var_names = np.loadtxt('../../../selected_input/philippine_train.data.csv', dtype=str,delimiter=',')
+# print(var_names)
+# selected_var_num = var_names.shape[0]-1
+# var_indices=np.zeros(selected_var_num,dtype=int)
+# for i in range(selected_var_num):
+#     var_indices[i] = int(var_names[i][1:])
+#
+# # print(var_indices)
+# # print(var_indices.shape)
+# # print(train_data.shape)
+# # train_data=train_data[:,var_indices]
+# # print(train_data.shape)
+# # exit(1)
+# (train_data, valid_data, test_data) = Choose_variables(var_indices, train_data, valid_data, test_data)
+# #(train_data,valid_data,test_data)=Preprocess_data(train_data, valid_data, test_data, labels)
 
 ######################### Make validation/test predictions
 
-# gbt_params=GBT_params(n_iterations=5000,depth=6, learning_rate=0.01,subsample_part=0.6,n_max_features=(n_features/2))
-# gbt_params.print_params()
-#
-# start_time = time.time()
-# make_classification(gbt_params, train_data, labels, valid_data, test_data, 'res/philippine_valid_001.predict', 'res/philippine_test_001.predict')
-# print("build ended %d seconds" % (time.time() - start_time))
-#
-# exit(1)
+n_features=train_data.shape[1]
+gbt_features=int(n_features**0.5)
+gbt_params=GBT_params(n_iterations=5000,depth=6, learning_rate=0.01,subsample_part=0.6,n_max_features=gbt_features)
+gbt_params.print_params()
+
+start_time = time.time()
+make_classification(gbt_params, train_data, labels, valid_data, test_data, 'res/philippine_valid_001.predict', 'res/philippine_test_001.predict')
+print("build ended %d seconds" % (time.time() - start_time))
+
+exit(1)
 
 
 

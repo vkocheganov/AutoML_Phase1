@@ -44,3 +44,15 @@ def Preprocess_data(train_data, valid_data, test_data, solution):
     test_data = numpy.delete(test_data, idxs_to_del_array,1)
     print("train_data shape after deletin correlated features %d %d"%train_data.shape)
     return (train_data,valid_data,test_data)
+
+def Choose_variables(var_indices, train_data, valid_data, test_data):
+    print("train_data shape before preprocessing %d %d"%train_data.shape)
+
+    n_old_features=train_data.shape[1]
+    n_new_features = var_indices.shape[0]
+    train_data=train_data[:,var_indices]
+    valid_data=valid_data[:,var_indices]
+    test_data=test_data[:,var_indices]
+    return (train_data,valid_data,test_data)
+
+
