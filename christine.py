@@ -30,7 +30,7 @@ print("Loading data is complete, %d" % (start_time - time.time()))
 
 # Choose Ideal preselected features
 
-select_clf = ExtraTreesClassifier(n_estimators=10000,max_depth=5)
+select_clf = ExtraTreesClassifier(n_estimators=10000,max_depth=7)
 print(train_data.shape)
 select_clf.fit(train_data, labels)
 train_data = select_clf.transform(train_data)
