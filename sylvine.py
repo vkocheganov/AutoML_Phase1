@@ -28,7 +28,7 @@ print("end loading , %d" % (start_time - time.time()))
 
 
 #(train_data,valid_data,test_data)=Preprocess_data(train_data, valid_data, test_data, labels)
-select_clf = ExtraTreesClassifier(n_estimators=10000)
+select_clf = ExtraTreesClassifier(n_estimators=10000,max_depth=5)
 print(train_data.shape)
 select_clf.fit(train_data, labels)
 train_data = select_clf.transform(train_data,threshold='0.5*mean')

@@ -29,12 +29,12 @@ print("end loading , %d" % (start_time - time.time()))
 
 #(train_data,valid_data,test_data)=Preprocess_data(train_data, valid_data, test_data, labels)
 
-select_clf = ExtraTreesClassifier(n_estimators=10000)
+select_clf = ExtraTreesClassifier(n_estimators=10000,max_depth=5)
 print(train_data.shape)
 select_clf.fit(train_data, labels)
-train_data = select_clf.transform(train_data)
-valid_data = select_clf.transform(valid_data)
-test_data = select_clf.transform(test_data)
+train_data = select_clf.transform(train_data,threshold='0.5*mean')
+valid_data = select_clf.transform(valid_data,threshold='0.5*mean')
+test_data = select_clf.transform(test_data,threshold='0.5*mean')
 print(np.sort(select_clf.feature_importances_))
 print(train_data.shape)
 
@@ -51,7 +51,8 @@ print(train_data.shape)
 ######################### Make validation/test predictions
 
 n_features=train_data.shape[1]
-gbt_features=int(n_features**0.5)
+#gbt_features=int(n_features**0.5)
+gbt_features=n_features
 gbt_params=GBT_params(n_iterations=10000,depth=5, learning_rate=0.01,subsample_part=0.6,n_max_features=gbt_features)
 gbt_params.print_params()
 
