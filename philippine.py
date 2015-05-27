@@ -27,7 +27,7 @@ valid_data = np.loadtxt('input/philippine/philippine_valid.data')
 labels = np.loadtxt('input/philippine/philippine_train.solution')
 print("end loading , %d" % (start_time - time.time()))
 
-select_clf = ExtraTreesClassifier()
+select_clf = ExtraTreesClassifier(n_estimators=5000)
 print(train_data.shape)
 select_clf.fit(train_data, labels)
 train_data = select_clf.transform(train_data)
