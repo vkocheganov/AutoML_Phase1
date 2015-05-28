@@ -54,7 +54,7 @@ print(train_data.shape)
 n_features=train_data.shape[1]
 
 gbt_features=int(n_features**0.5)
-gbt_params=GBT_params(n_iterations=12000,depth=6, learning_rate=0.008,subsample_part=0.6,n_max_features=gbt_features)
+gbt_params=GBT_params(n_iterations=12000,depth=5, learning_rate=0.01,subsample_part=0.6,n_max_features=gbt_features)
 gbt_params.print_params()
 
 start_time = time.time()
