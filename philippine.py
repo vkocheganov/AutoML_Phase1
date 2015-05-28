@@ -36,6 +36,11 @@ test_data = select_clf.transform(test_data)
 print(np.sort(select_clf.feature_importances_))
 print(train_data.shape)
 
+my_mean =np.percentile(select_clf.feature_importances_,50)
+print("mean = %f\n" % my_mean)
+print(np.where(select_clf.feature_importances_ > my_mean))
+# exit(1)
+
 # var_names = np.loadtxt('../../../selected_input/philippine_train.data.csv', dtype=str,delimiter=',')
 # print(var_names)
 # selected_var_num = var_names.shape[0]-1
@@ -56,7 +61,7 @@ print(train_data.shape)
 
 n_features=train_data.shape[1]
 gbt_features=int(n_features**0.5)
-gbt_params=GBT_params(n_iterations=10000,depth=6, learning_rate=0.01,subsample_part=0.6,n_max_features=gbt_features)
+gbt_params=GBT_params(n_iterations=11000,depth=5, learning_rate=0.01,subsample_part=0.6,n_max_features=gbt_features)
 gbt_params.print_params()
 
 start_time = time.time()
