@@ -41,7 +41,7 @@ my_mean =np.mean(select_clf.feature_importances_)
 print("mean = %f\n" % my_mean)
 print(np.where(select_clf.feature_importances_ > 0.5*my_mean))
 
-exit(1)
+#exit(1)
 
 # var_names = np.loadtxt('../../../selected_input/sylvine_train.data.csv', dtype=str,delimiter=',')
 # print(var_names)
