@@ -27,8 +27,8 @@ valid_data = np.loadtxt('input/madeline/madeline_valid.data')
 labels = np.loadtxt('input/madeline/madeline_train.solution')
 print("end loading , %d" % (start_time - time.time()))
 
-#(train_data,valid_data,test_data)=Preprocess_data(train_data, valid_data, test_data, labels)
-
+(train_data,valid_data,test_data)=Preprocess_data(train_data, valid_data, test_data, labels)
+exit(1)
 select_clf = ExtraTreesClassifier(n_estimators=5000,max_depth=4)
 print(train_data.shape)
 select_clf.fit(train_data, labels)
