@@ -53,7 +53,7 @@ start_time = time.time()
 n_features=train_data.shape[1]
 #gbt_features=int(n_features**0.5)
 gbt_features=n_features
-gbt_params=GBT_params(n_iterations=14000,depth=6, learning_rate=0.01,subsample_part=0.6,n_max_features=gbt_features)
+gbt_params=GBT_params(n_iterations=14000,depth=6, learning_rate=0.007,subsample_part=0.6,n_max_features=gbt_features)
 gbt_params.print_params()
 
 make_classification(gbt_params, train_data, labels, valid_data, test_data, 'res/sylvine_valid_001.predict', 'res/sylvine_test_001.predict')

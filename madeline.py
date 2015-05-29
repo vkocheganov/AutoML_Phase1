@@ -66,9 +66,9 @@ print()
 ######################### Make validation/test predictions
 
 n_features=train_data.shape[1]
-gbt_features=int(n_features**0.5)
-#gbt_features=n_features/2
-gbt_params=GBT_params(n_iterations=14000,depth=5, learning_rate=0.01,subsample_part=0.6,n_max_features=gbt_features)
+#gbt_features=int(n_features**0.5)
+gbt_features=n_features
+gbt_params=GBT_params(n_iterations=5000,depth=5, learning_rate=0.02,subsample_part=0.6,n_max_features=gbt_features)
 gbt_params.print_params()
 
 make_classification(gbt_params, train_data, labels, valid_data, test_data, 'res/madeline_valid_001.predict', 'res/madeline_test_001.predict')
