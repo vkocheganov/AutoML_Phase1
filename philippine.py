@@ -27,6 +27,7 @@ valid_data = np.loadtxt('input/philippine/philippine_valid.data')
 labels = np.loadtxt('input/philippine/philippine_train.solution')
 print("end loading , %d" % (start_time - time.time()))
 
+start_time = time.time()
 select_clf = ExtraTreesClassifier(n_estimators=10000, max_depth=7)
 print(train_data.shape)
 select_clf.fit(train_data, labels)
@@ -64,7 +65,6 @@ gbt_features=int(n_features**0.5)
 gbt_params=GBT_params(n_iterations=14000,depth=6, learning_rate=0.007,subsample_part=0.6,n_max_features=gbt_features)
 gbt_params.print_params()
 
-start_time = time.time()
 make_classification(gbt_params, train_data, labels, valid_data, test_data, 'res/philippine_valid_001.predict', 'res/philippine_test_001.predict')
 print("build ended %d seconds" % (time.time() - start_time))
 

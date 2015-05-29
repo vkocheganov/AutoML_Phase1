@@ -23,6 +23,7 @@ valid_data = np.loadtxt('input/jasmine/jasmine_valid.data')
 labels = np.loadtxt('input/jasmine/jasmine_train.solution')
 print("end loading , %d seconds" % (start_time - time.time()))
 
+start_time = time.time()
 # (train_data,valid_data,test_data)=Preprocess_data(train_data, valid_data, test_data, labels)
 # exit(1)
 select_clf = ExtraTreesClassifier(n_estimators=1000,max_depth=4)
@@ -84,7 +85,6 @@ gbt_features=n_features
 gbt_params=GBT_params(n_iterations=14000,depth=6, learning_rate=0.008,subsample_part=0.6,n_max_features=gbt_features)
 gbt_params.print_params()
 
-start_time = time.time()
 make_classification(gbt_params, train_data, labels, valid_data, test_data, 'res/jasmine_valid_001.predict', 'res/jasmine_test_001.predict')
 print("build ended %d seconds" % (time.time() - start_time))
 

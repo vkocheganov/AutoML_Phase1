@@ -26,6 +26,7 @@ valid_data = np.loadtxt('input/christine/christine_valid.data')
 labels = np.loadtxt('input/christine/christine_train.solution')
 print("Loading data is complete, %d" % (start_time - time.time()))
 
+start_time = time.time()
 #(train_data,valid_data,test_data)=Preprocess_data(train_data, valid_data, test_data, labels)
 
 # Choose Ideal preselected features
@@ -57,7 +58,6 @@ gbt_features=int(n_features**0.5)
 gbt_params=GBT_params(n_iterations=14000,depth=6, learning_rate=0.007,subsample_part=0.6,n_max_features=gbt_features)
 gbt_params.print_params()
 
-start_time = time.time()
 make_classification(gbt_params, train_data, labels, valid_data, test_data, 'res/christine_valid_001.predict', 'res/christine_test_001.predict')
 print("build ended %d seconds" % (time.time() - start_time))
 
