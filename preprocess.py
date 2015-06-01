@@ -9,12 +9,15 @@ class GBT_params:
     # learning_rate=0.1
     # subsample_part=0.7
     # n_max_features=-1
-    def __init__(self, n_iterations=1000, depth=5, learning_rate=0.1, subsample_part=0.7, n_max_features=-1):
+    def __init__(self, n_iterations=1000, depth=5, learning_rate=0.1, subsample_part=0.7, n_max_features=-1, min_samples_split=5, min_samples_leaf=5):
         self.n_iterations=n_iterations
         self.depth=depth
         self.learning_rate=learning_rate
         self.subsample_part=subsample_part
         self.n_max_features=n_max_features
+        self.min_samples_split=min_samples_split
+        self.min_samples_leaf=min_samples_leaf
+
     def print_params(self):
         print ("n_iterations = %d depth=%d learning_rate = %f, subsample_part = %f, n_max_features=%d"% (self.n_iterations, self.depth, self.learning_rate, self.subsample_part, self.n_max_features))
 
