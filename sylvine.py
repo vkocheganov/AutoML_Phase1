@@ -27,6 +27,10 @@ labels = np.loadtxt('input/sylvine/sylvine_train.solution')
 print("end loading , %d" % (start_time - time.time()))
 
 start_time = time.time()
+np_seed = int(time.time())
+np.random.seed(np_seed)
+print ("np seed = " , np_seed)
+
 #(train_data,valid_data,test_data)=Preprocess_data(train_data, valid_data, test_data, labels)
 select_clf = ExtraTreesClassifier(n_estimators=1000, max_depth=5)
 print(train_data.shape)
@@ -58,10 +62,12 @@ print(np.where(select_clf.feature_importances_ > 0.5*my_mean))
 n_features=train_data.shape[1]
 #gbt_features=int(n_features**0.5)
 gbt_features=n_features
-gbt_params=GBT_params(n_iterations=14000,depth=6, learning_rate=0.007,subsample_part=0.6,n_max_features=gbt_features,min_samples_split=10, min_samples_leaf=5)
+gbt_params=GBT_params(n_iterations=14000,depth=6, learning_rate=0.01,subsample_part=0.6,n_max_features=gbt_features,min_samples_split=5, min_samples_leaf=2)
 gbt_params.print_params()
 
 make_classification(gbt_params, train_data, labels, valid_data, test_data, 'res/sylvine_valid_001.predict', 'res/sylvine_test_001.predict')
+np.savetxt('res/sylvine.seed', np.array([np_seed]),"%d")
+
 print("build ended %d seconds" % (time.time() - start_time))
 
 exit(1)

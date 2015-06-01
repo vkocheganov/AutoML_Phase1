@@ -27,6 +27,10 @@ labels = np.loadtxt('input/christine/christine_train.solution')
 print("Loading data is complete, %d" % (start_time - time.time()))
 
 start_time = time.time()
+np_seed = int(time.time())
+np.random.seed(np_seed)
+print ("np seed = " , np_seed)
+
 #(train_data,valid_data,test_data)=Preprocess_data(train_data, valid_data, test_data, labels)
 
 # Choose Ideal preselected features
@@ -55,11 +59,12 @@ print(train_data.shape)
 n_features=train_data.shape[1]
 
 gbt_features=int(n_features**0.5)
-gbt_params=GBT_params(n_iterations=14000,depth=6, learning_rate=0.007,subsample_part=0.6,n_max_features=gbt_features,min_samples_split=10, min_samples_leaf=5)
+gbt_params=GBT_params(n_iterations=14000,depth=6, learning_rate=0.01,subsample_part=0.6,n_max_features=gbt_features,min_samples_split=5, min_samples_leaf=2)
 gbt_params.print_params()
 
 make_classification(gbt_params, train_data, labels, valid_data, test_data, 'res/christine_valid_001.predict', 'res/christine_test_001.predict')
 print("build ended %d seconds" % (time.time() - start_time))
+np.savetxt('res/christine.seed', np.array([np_seed]),"%d")
 
 exit(1)
 

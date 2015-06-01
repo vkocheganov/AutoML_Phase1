@@ -28,7 +28,10 @@ labels = np.loadtxt('input/madeline/madeline_train.solution')
 print("end loading , %d" % (start_time - time.time()))
 
 start_time = time.time()
-(train_data,valid_data,test_data)=Preprocess_data(train_data, valid_data, test_data, labels)
+np_seed = int(time.time())
+np.random.seed(np_seed)
+print ("np seed = " , np_seed)
+#(train_data,valid_data,test_data)=Preprocess_data(train_data, valid_data, test_data, labels)
 #exit(1)
 select_clf = ExtraTreesClassifier(n_estimators=5000,max_depth=4)
 print(train_data.shape)
@@ -67,12 +70,13 @@ print()
 n_features=train_data.shape[1]
 #gbt_features=int(n_features**0.5)
 gbt_features=n_features
-gbt_params=GBT_params(n_iterations=8000,depth=5, learning_rate=0.01,subsample_part=0.6,n_max_features=gbt_features,min_samples_split=10, min_samples_leaf=5)
+gbt_params=GBT_params(n_iterations=8000,depth=6, learning_rate=0.01,subsample_part=0.6,n_max_features=gbt_features,min_samples_split=5, min_samples_leaf=2)
 #gbt_params=GBT_params(n_iterations=1,depth=6, learning_rate=0.007,subsample_part=0.6,n_max_features=gbt_features,min_samples_split=10, min_samples_leaf=5)
 gbt_params.print_params()
 
 make_classification(gbt_params, train_data, labels, valid_data, test_data, 'res/madeline_valid_001.predict', 'res/madeline_test_001.predict')
 print("build ended %d seconds" % (time.time() - start_time))
+np.savetxt('res/madeline.seed', np.array([np_seed]),"%d")
 
 exit(1)
 
