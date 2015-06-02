@@ -70,7 +70,7 @@ print()
 n_features=train_data.shape[1]
 #gbt_features=int(n_features**0.5)
 gbt_features=n_features
-gbt_params=GBT_params(n_iterations=14000,depth=7, learning_rate=0.01,subsample_part=0.6,n_max_features=gbt_features,min_samples_split=5, min_samples_leaf=2)
+gbt_params=GBT_params(n_iterations=25000,depth=8, learning_rate=0.01,subsample_part=0.6,n_max_features=gbt_features,min_samples_split=5, min_samples_leaf=2)
 #gbt_params=GBT_params(n_iterations=1,depth=6, learning_rate=0.007,subsample_part=0.6,n_max_features=gbt_features,min_samples_split=10, min_samples_leaf=5)
 gbt_params.print_params()
 
