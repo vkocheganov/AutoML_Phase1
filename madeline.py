@@ -13,7 +13,7 @@ import numpy
 from time import gmtime, strftime
 from calc_cv_scores import Calc_CV_ERROR,make_cross_validation
 from preprocess import Preprocess_data,GBT_params,Choose_variables
-from utils import make_classification
+from utils import make_classification,make_classification_random_forest
 print(strftime("%Y-%m-%d %H:%M:%S"))
 
 
@@ -34,7 +34,7 @@ np.random.seed(np_seed)
 print ("np seed = " , np_seed)
 #(train_data,valid_data,test_data)=Preprocess_data(train_data, valid_data, test_data, labels)
 #exit(1)
-select_clf = ExtraTreesClassifier(n_estimators=5000,max_depth=4)
+select_clf = ExtraTreesClassifier(n_estimators=3000,max_depth=3)
 print(train_data.shape)
 select_clf.fit(train_data, labels)
 my_mean =np.percentile(select_clf.feature_importances_,20)
@@ -83,7 +83,9 @@ gbt_params=GBT_params(n_iterations=15000,depth=7, learning_rate=0.01,subsample_p
 #gbt_params=GBT_params(n_iterations=1,depth=6, learning_rate=0.007,subsample_part=0.6,n_max_features=gbt_features,min_samples_split=10, min_samples_leaf=5)
 gbt_params.print_params()
 
-make_classification(gbt_params, train_data, labels, valid_data, test_data, 'res/madeline_valid_001.predict', 'res/madeline_test_001.predict')
+#make_classification(gbt_params, train_data, labels, valid_data, test_data, 'res/madeline_valid_001.predict', 'res/madeline_test_001.predict')
+forest_params=GBT_params(n_iterations=15000,depth=10, learning_rate=0.01,subsample_part=0.6,n_max_features=gbt_features,min_samples_split=10, min_samples_leaf=4)
+make_classification_random_forest(gbt_params, train_data, labels, valid_data, test_data,'res/madeline_valid_001.predict', 'res/madeline_test_001.predict')
 print("build ended %d seconds" % (time.time() - start_time))
 np.savetxt('res/madeline.seed', np.array([np_seed]),"%d")
 

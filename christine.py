@@ -14,7 +14,7 @@ from time import gmtime, strftime
 
 from calc_cv_scores import Calc_CV_ERROR,make_cross_validation
 from preprocess import Preprocess_data,GBT_params,Choose_variables
-from utils import make_classification
+from utils import make_classification,make_classification_random_forest
 
 print(strftime("%Y-%m-%d %H:%M:%S"))
 
@@ -36,11 +36,11 @@ print ("np seed = " , np_seed)
 
 # Choose Ideal preselected features
 
-select_clf = ExtraTreesClassifier(n_estimators=4000,max_depth=5)
+select_clf = ExtraTreesClassifier(n_estimators=3000,max_depth=3)
 
 print(train_data.shape)
 select_clf.fit(train_data, labels)
-my_mean =np.percentile(select_clf.feature_importances_,80)
+my_mean =np.percentile(select_clf.feature_importances_,20)
 train_data = select_clf.transform(train_data,threshold=my_mean)
 valid_data = select_clf.transform(valid_data,threshold=my_mean)
 test_data = select_clf.transform(test_data,threshold=my_mean)
@@ -76,7 +76,9 @@ gbt_features=int(n_features**0.5)
 gbt_params=GBT_params(n_iterations=13000,depth=7, learning_rate=0.01,subsample_part=0.6,n_max_features=gbt_features,min_samples_split=10, min_samples_leaf=4)
 gbt_params.print_params()
 
-make_classification(gbt_params, train_data, labels, valid_data, test_data, 'res/christine_valid_001.predict', 'res/christine_test_001.predict')
+#make_classification(gbt_params, train_data, labels, valid_data, test_data, 'res/christine_valid_001.predict', 'res/christine_test_001.predict')
+forest_params=GBT_params(n_iterations=15000,depth=10, learning_rate=0.01,subsample_part=0.6,n_max_features=gbt_features,min_samples_split=10, min_samples_leaf=4)
+make_classification_random_forest(gbt_params, train_data, labels, valid_data, test_data, 'res/christine_valid_001.predict', 'res/christine_test_001.predict')
 print("build ended %d seconds" % (time.time() - start_time))
 np.savetxt('res/christine.seed', np.array([np_seed]),"%d")
 

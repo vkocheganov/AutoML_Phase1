@@ -16,7 +16,7 @@ from libs.data_io import *
 from time import gmtime, strftime
 from calc_cv_scores import Calc_CV_ERROR
 from preprocess import Preprocess_data,GBT_params,Choose_variables
-from utils import make_classification
+from utils import make_classification,make_classification_random_forest
 from calc_cv_scores import make_cross_validation
 print(strftime("%Y-%m-%d %H:%M:%S"))
 
@@ -34,7 +34,7 @@ np.random.seed(np_seed)
 print ("np seed = " , np_seed)
 
 #(train_data,valid_data,test_data)=Preprocess_data(train_data, valid_data, test_data, labels)
-select_clf = ExtraTreesClassifier(n_estimators=1000, max_depth=5)
+select_clf = ExtraTreesClassifier(n_estimators=3000, max_depth=3)
 print(train_data.shape)
 select_clf.fit(train_data, labels)
 train_data = select_clf.transform(train_data,threshold='0.5*mean')
@@ -73,7 +73,9 @@ gbt_features=n_features
 gbt_params=GBT_params(n_iterations=10000,depth=6, learning_rate=0.01,subsample_part=0.6,n_max_features=gbt_features,min_samples_split=10, min_samples_leaf=4)
 gbt_params.print_params()
 
-make_classification(gbt_params, train_data, labels, valid_data, test_data, 'res/sylvine_valid_001.predict', 'res/sylvine_test_001.predict')
+#make_classification(gbt_params, train_data, labels, valid_data, test_data, 'res/sylvine_valid_001.predict', 'res/sylvine_test_001.predict')
+forest_params=GBT_params(n_iterations=15000,depth=10, learning_rate=0.01,subsample_part=0.6,n_max_features=gbt_features,min_samples_split=10, min_samples_leaf=4)
+make_classification_random_forest(gbt_params, train_data, labels, valid_data, test_data,  'res/sylvine_valid_001.predict', 'res/sylvine_test_001.predict')
 np.savetxt('res/sylvine.seed', np.array([np_seed]),"%d")
 
 print("build ended %d seconds" % (time.time() - start_time))
