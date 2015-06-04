@@ -1,5 +1,6 @@
 __author__ = 'vmkochegvirtual'
 
+from sklearn.decomposition import PCA
 from sklearn.ensemble import ExtraTreesClassifier
 from sklearn import ensemble, linear_model
 from sklearn.cross_validation import KFold
@@ -41,7 +42,7 @@ test_data = select_clf.transform(test_data)
 print(np.sort(select_clf.feature_importances_))
 print(train_data.shape)
 
-my_mean =np.percentile(select_clf.feature_importances_,50)
+my_mean =np.percentile(select_clf.feature_importances_,20)
 print("mean = %f\n" % my_mean)
 print(np.where(select_clf.feature_importances_ > my_mean))
 #exit(1)
@@ -62,12 +63,23 @@ print(np.where(select_clf.feature_importances_ > my_mean))
 # (train_data, valid_data, test_data) = Choose_variables(var_indices, train_data, valid_data, test_data)
 # #(train_data,valid_data,test_data)=Preprocess_data(train_data, valid_data, test_data, labels)
 
+# pca = PCA(n_components=6)
+# pca.fit(train_data)
+# print(pca.explained_variance_ratio_)
+# print(np.sum(pca.explained_variance_ratio_))
+
+#exit(1)
+# train_data = pca.transform(train_data)
+# valid_data = pca.transform(valid_data)
+# test_data = pca.transform(test_data)
+
+
 ######################### Make validation/test predictions
 
 n_features=train_data.shape[1]
-#gbt_features=int(n_features**0.5)
-gbt_features=n_features
-gbt_params=GBT_params(n_iterations=15000,depth=6, learning_rate=0.01,subsample_part=0.7,n_max_features=gbt_features,min_samples_split=4, min_samples_leaf=2)
+gbt_features=int(n_features**0.5)
+#gbt_features=n_features
+gbt_params=GBT_params(n_iterations=15000,depth=6, learning_rate=0.01,subsample_part=0.6,n_max_features=gbt_features,min_samples_split=10, min_samples_leaf=4)
 gbt_params.print_params()
 
 make_classification(gbt_params, train_data, labels, valid_data, test_data, 'res/philippine_valid_001.predict', 'res/philippine_test_001.predict')
