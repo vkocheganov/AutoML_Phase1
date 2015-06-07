@@ -36,7 +36,7 @@ print ("np seed = " , np_seed)
 
 # Choose Ideal preselected features
 
-select_clf = ExtraTreesClassifier(n_estimators=3000,max_depth=3)
+select_clf = ExtraTreesClassifier(n_estimators=1000,max_depth=3,min_samples_split=20, min_samples_leaf=5)
 
 print(train_data.shape)
 select_clf.fit(train_data, labels)
@@ -76,9 +76,9 @@ gbt_features=int(n_features**0.5)
 gbt_params=GBT_params(n_iterations=13000,depth=7, learning_rate=0.01,subsample_part=0.6,n_max_features=gbt_features,min_samples_split=10, min_samples_leaf=4)
 gbt_params.print_params()
 
-#make_classification(gbt_params, train_data, labels, valid_data, test_data, 'res/christine_valid_001.predict', 'res/christine_test_001.predict')
-forest_params=GBT_params(n_iterations=15000,depth=10, learning_rate=0.01,subsample_part=0.6,n_max_features=gbt_features,min_samples_split=10, min_samples_leaf=4)
-make_classification_random_forest(gbt_params, train_data, labels, valid_data, test_data, 'res/christine_valid_001.predict', 'res/christine_test_001.predict')
+make_classification(gbt_params, train_data, labels, valid_data, test_data, 'res/christine_valid_001.predict', 'res/christine_test_001.predict')
+# forest_params=GBT_params(n_iterations=15000,depth=10, learning_rate=0.01,subsample_part=0.6,n_max_features=gbt_features,min_samples_split=10, min_samples_leaf=4)
+# make_classification_random_forest(gbt_params, train_data, labels, valid_data, test_data, 'res/christine_valid_001.predict', 'res/christine_test_001.predict')
 print("build ended %d seconds" % (time.time() - start_time))
 np.savetxt('res/christine.seed', np.array([np_seed]),"%d")
 

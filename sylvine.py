@@ -34,7 +34,7 @@ np.random.seed(np_seed)
 print ("np seed = " , np_seed)
 
 #(train_data,valid_data,test_data)=Preprocess_data(train_data, valid_data, test_data, labels)
-select_clf = ExtraTreesClassifier(n_estimators=3000, max_depth=3)
+select_clf = ExtraTreesClassifier(n_estimators=1000,max_depth=3,min_samples_split=20, min_samples_leaf=5)
 print(train_data.shape)
 select_clf.fit(train_data, labels)
 train_data = select_clf.transform(train_data,threshold='0.5*mean')
