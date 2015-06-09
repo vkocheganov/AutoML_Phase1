@@ -34,10 +34,10 @@ np.random.seed(np_seed)
 print ("np seed = " , np_seed)
 #(train_data,valid_data,test_data)=Preprocess_data(train_data, valid_data, test_data, labels)
 #exit(1)
-select_clf = ExtraTreesClassifier(n_estimators=1000,max_depth=3,min_samples_split=20, min_samples_leaf=5)
+select_clf = ExtraTreesClassifier(n_estimators=5000,max_depth=4)
 print(train_data.shape)
 select_clf.fit(train_data, labels)
-my_mean =np.percentile(select_clf.feature_importances_,20)
+my_mean =np.percentile(select_clf.feature_importances_,90)
 
 train_data = select_clf.transform(train_data,threshold=my_mean )
 valid_data = select_clf.transform(valid_data,threshold=my_mean )
@@ -77,8 +77,8 @@ print()
 ######################### Make validation/test predictions
 
 n_features=train_data.shape[1]
-gbt_features=int(n_features**0.5)
-#gbt_features=n_features
+#gbt_features=int(n_features**0.5)
+gbt_features=n_features
 gbt_params=GBT_params(n_iterations=15000,depth=7, learning_rate=0.01,subsample_part=0.7,n_max_features=gbt_features,min_samples_split=5, min_samples_leaf=2)
 #gbt_params=GBT_params(n_iterations=1,depth=6, learning_rate=0.007,subsample_part=0.6,n_max_features=gbt_features,min_samples_split=10, min_samples_leaf=5)
 gbt_params.print_params()

@@ -33,7 +33,7 @@ np_seed = int(time.time())
 np.random.seed(np_seed)
 print ("np seed = " , np_seed)
 
-select_clf = ExtraTreesClassifier(n_estimators=1000,max_depth=3,min_samples_split=20, min_samples_leaf=5)
+select_clf = ExtraTreesClassifier(n_estimators=2000,max_depth=5)
 print(train_data.shape)
 select_clf.fit(train_data, labels)
 train_data = select_clf.transform(train_data)
@@ -42,7 +42,7 @@ test_data = select_clf.transform(test_data)
 print(np.sort(select_clf.feature_importances_))
 print(train_data.shape)
 
-my_mean =np.percentile(select_clf.feature_importances_,20)
+my_mean =np.percentile(select_clf.feature_importances_,50)
 print("mean = %f\n" % my_mean)
 print(np.where(select_clf.feature_importances_ > my_mean))
 #exit(1)
@@ -79,7 +79,7 @@ print(np.where(select_clf.feature_importances_ > my_mean))
 n_features=train_data.shape[1]
 gbt_features=int(n_features**0.5)
 #gbt_features=n_features
-gbt_params=GBT_params(n_iterations=20000,depth=8, learning_rate=0.01,subsample_part=0.6,n_max_features=gbt_features,min_samples_split=5, min_samples_leaf=2)
+gbt_params=GBT_params(n_iterations=14000,depth=5, learning_rate=0.01,subsample_part=0.6,n_max_features=gbt_features,min_samples_split=5, min_samples_leaf=2)
 gbt_params.print_params()
 
 make_classification(gbt_params, train_data, labels, valid_data, test_data, 'res/philippine_valid_001.predict', 'res/philippine_test_001.predict')
