@@ -36,7 +36,7 @@ print ("np seed = " , np_seed)
 
 # Choose Ideal preselected features
 
-select_clf = ExtraTreesClassifier(n_estimators=1000,max_depth=3,min_samples_split=20, min_samples_leaf=5)
+select_clf = ExtraTreesClassifier(n_estimators=2000,max_depth=3,min_samples_split=20, min_samples_leaf=5)
 
 print(train_data.shape)
 select_clf.fit(train_data, labels)
@@ -73,7 +73,7 @@ print(train_data.shape)
 n_features=train_data.shape[1]
 #gbt_features=n_features
 gbt_features=int(n_features**0.5)
-gbt_params=GBT_params(n_iterations=13000,depth=7, learning_rate=0.01,subsample_part=0.6,n_max_features=gbt_features,min_samples_split=10, min_samples_leaf=4)
+gbt_params=GBT_params(n_iterations=15000,depth=7, learning_rate=0.01,subsample_part=0.6,n_max_features=gbt_features,min_samples_split=5, min_samples_leaf=2)
 gbt_params.print_params()
 
 make_classification(gbt_params, train_data, labels, valid_data, test_data, 'res/christine_valid_001.predict', 'res/christine_test_001.predict')
