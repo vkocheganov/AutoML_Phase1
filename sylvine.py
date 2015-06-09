@@ -73,9 +73,9 @@ gbt_features=n_features
 gbt_params=GBT_params(n_iterations=10000,depth=6, learning_rate=0.01,subsample_part=0.6,n_max_features=gbt_features,min_samples_split=4, min_samples_leaf=2)
 gbt_params.print_params()
 
-#make_classification(gbt_params, train_data, labels, valid_data, test_data, 'res/sylvine_valid_001.predict', 'res/sylvine_test_001.predict')
-forest_params=GBT_params(n_iterations=15000,depth=10, learning_rate=0.01,subsample_part=0.6,n_max_features=gbt_features,min_samples_split=10, min_samples_leaf=4)
-make_classification_random_forest(gbt_params, train_data, labels, valid_data, test_data,  'res/sylvine_valid_001.predict', 'res/sylvine_test_001.predict')
+make_classification(gbt_params, train_data, labels, valid_data, test_data, 'res/sylvine_valid_001.predict', 'res/sylvine_test_001.predict')
+# forest_params=GBT_params(n_iterations=15000,depth=10, learning_rate=0.01,subsample_part=0.6,n_max_features=gbt_features,min_samples_split=10, min_samples_leaf=4)
+# make_classification_random_forest(gbt_params, train_data, labels, valid_data, test_data,  'res/sylvine_valid_001.predict', 'res/sylvine_test_001.predict')
 np.savetxt('res/sylvine.seed', np.array([np_seed]),"%d")
 
 print("build ended %d seconds" % (time.time() - start_time))
