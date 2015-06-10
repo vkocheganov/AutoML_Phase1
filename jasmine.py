@@ -98,7 +98,7 @@ n_features=train_data.shape[1]
 n_features=train_data.shape[1]
 gbt_features=int(n_features**0.5)
 #gbt_features=n_features
-gbt_params=GBT_params(n_iterations=40000,depth=12, learning_rate=0.005,subsample_part=0.7,n_max_features=gbt_features,min_samples_split=4, min_samples_leaf=2)
+gbt_params=GBT_params(n_iterations=40000,depth=11, learning_rate=0.005,subsample_part=0.7,n_max_features=gbt_features,min_samples_split=4, min_samples_leaf=2)
 gbt_params.print_params()
 
 make_classification(gbt_params, train_data, labels, valid_data, test_data, 'res/jasmine_valid_001.predict', 'res/jasmine_test_001.predict')
