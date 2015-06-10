@@ -47,38 +47,22 @@ print("mean = %f\n" % my_mean)
 print(np.where(select_clf.feature_importances_ > my_mean))
 #exit(1)
 
-# var_names = np.loadtxt('../../../selected_input/philippine_train.data.csv', dtype=str,delimiter=',')
-# print(var_names)
-# selected_var_num = var_names.shape[0]-1
-# var_indices=np.zeros(selected_var_num,dtype=int)
-# for i in range(selected_var_num):
-#     var_indices[i] = int(var_names[i][1:])
-#
-# # print(var_indices)
-# # print(var_indices.shape)
-# # print(train_data.shape)
-# # train_data=train_data[:,var_indices]
-# # print(train_data.shape)
-# # exit(1)
-# (train_data, valid_data, test_data) = Choose_variables(var_indices, train_data, valid_data, test_data)
-# #(train_data,valid_data,test_data)=Preprocess_data(train_data, valid_data, test_data, labels)
-
-# pca = PCA(n_components=6)
-# pca.fit(train_data)
-# print(pca.explained_variance_ratio_)
-# print(np.sum(pca.explained_variance_ratio_))
-
+pca = PCA(n_components=13)
+pca.fit(train_data)
+print(pca.explained_variance_ratio_)
+print(np.sum(pca.explained_variance_ratio_))
 #exit(1)
-# train_data = pca.transform(train_data)
-# valid_data = pca.transform(valid_data)
-# test_data = pca.transform(test_data)
+
+train_data = pca.transform(train_data)
+valid_data = pca.transform(valid_data)
+test_data = pca.transform(test_data)
 
 
 ######################### Make validation/test predictions
 
 n_features=train_data.shape[1]
-gbt_features=int(n_features**0.5)
-#gbt_features=n_features
+#gbt_features=int(n_features**0.5)
+gbt_features=n_features
 gbt_params=GBT_params(n_iterations=15000,depth=10, learning_rate=0.01,subsample_part=0.6,n_max_features=gbt_features,min_samples_split=6, min_samples_leaf=3)
 gbt_params.print_params()
 
