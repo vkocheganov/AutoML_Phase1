@@ -37,7 +37,7 @@ print ("np seed = " , np_seed)
 select_clf = ExtraTreesClassifier(n_estimators=5000,max_depth=4)
 print(train_data.shape)
 select_clf.fit(train_data, labels)
-my_mean =np.percentile(select_clf.feature_importances_,95)
+my_mean =0.0015#np.percentile(select_clf.feature_importances_,80)
 
 train_data = select_clf.transform(train_data,threshold=my_mean )
 valid_data = select_clf.transform(valid_data,threshold=my_mean )

@@ -37,27 +37,29 @@ select_clf = ExtraTreesClassifier(n_estimators=2000,max_depth=5)
 print(train_data.shape)
 select_clf.fit(train_data, labels)
 print(np.sort(select_clf.feature_importances_))
-print(train_data.shape)
 
-my_mean =np.percentile(select_clf.feature_importances_,50)
+
+my_mean =0.001#np.percentile(select_clf.feature_importances_,50)
 train_data = select_clf.transform(train_data,threshold=my_mean)
 valid_data = select_clf.transform(valid_data,threshold=my_mean)
 test_data = select_clf.transform(test_data,threshold=my_mean)
-
+print(train_data.shape)
 print("mean = %f\n" % my_mean)
 print(np.where(select_clf.feature_importances_ > my_mean))
+print("mean = %f\n" % np.mean(select_clf.feature_importances_))
+
 #exit(1)
 
-pca = PCA(n_components=30)
-pca.fit(train_data)
-print(pca.explained_variance_ratio_)
-print(np.sum(pca.explained_variance_ratio_))
+# pca = PCA(n_components=30)
+# pca.fit(train_data)
+# print(pca.explained_variance_ratio_)
+# print(np.sum(pca.explained_variance_ratio_))
 #exit(1)
 
-train_data = pca.transform(train_data)
-valid_data = pca.transform(valid_data)
-test_data = pca.transform(test_data)
-
+# train_data = pca.transform(train_data)
+# valid_data = pca.transform(valid_data)
+# test_data = pca.transform(test_data)
+#
 
 ######################### Make validation/test predictions
 

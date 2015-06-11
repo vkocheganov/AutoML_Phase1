@@ -40,22 +40,16 @@ select_clf = ExtraTreesClassifier(n_estimators=5000,max_depth=5)
 
 print(train_data.shape)
 select_clf.fit(train_data, labels)
-my_mean =np.mean(select_clf.feature_importances_)#np.percentile(select_clf.feature_importances_,20)
+my_mean =0.0001#np.mean(select_clf.feature_importances_)#np.percentile(select_clf.feature_importances_,20)
+print(my_mean)
 train_data = select_clf.transform(train_data,threshold=my_mean)
 valid_data = select_clf.transform(valid_data,threshold=my_mean)
 test_data = select_clf.transform(test_data,threshold=my_mean)
 print(np.sort(select_clf.feature_importances_))
+print(np.sort(select_clf.feature_importances_[np.where(select_clf.feature_importances_ > 0)]))
+#print(np.sort(select_clf.feature_importances_[0:100]))
+
 print(train_data.shape)
-#exit(1)
-# var_names = np.loadtxt('../../../selected_input/christine_train.data.csv', dtype=str,delimiter=',')
-# print(var_names)
-# selected_var_num = var_names.shape[0]-1
-# var_indices=np.zeros(selected_var_num,dtype=int)
-# for i in range(selected_var_num):
-#     var_indices[i] = int(var_names[i][1:])
-# print(var_indices)
-#
-# (train_data, valid_data, test_data) = Choose_variables(var_indices, train_data, valid_data, test_data)
 
 # pca = PCA(n_components=50)
 # pca.fit(train_data)
