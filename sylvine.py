@@ -20,74 +20,29 @@ from utils import make_classification,make_classification_random_forest
 from calc_cv_scores import make_cross_validation
 print(strftime("%Y-%m-%d %H:%M:%S"))
 
-imports_file='res/sylvine.importances'
-start_time = time.time()
-train_data = np.loadtxt('input/sylvine/sylvine_train.data')
-test_data = np.loadtxt('input/sylvine/sylvine_test.data')
-valid_data = np.loadtxt('input/sylvine/sylvine_valid.data')
-labels = np.loadtxt('input/sylvine/sylvine_train.solution')
-print("end loading , %d" % (start_time - time.time()))
+def sylvine_predict(train_data,labels,valid_data,test_data,output_dir):
+    print("make sylvine prediction\n")
+    start_time = time.time()
+    np_seed = int(time.time())
+    np.random.seed(np_seed)
+    print ("np seed = " , np_seed)
+    print(train_data.shape)
 
-start_time = time.time()
-np_seed = int(time.time())
-np.random.seed(np_seed)
-print ("np seed = " , np_seed)
+    select_clf = ExtraTreesClassifier(n_estimators=1000,max_depth=5)
+    select_clf.fit(train_data, labels)
+    my_mean =0.01
 
-#(train_data,valid_data,test_data)=Preprocess_data(train_data, valid_data, test_data, labels)
-select_clf = ExtraTreesClassifier(n_estimators=1000,max_depth=5)
-print(train_data.shape)
-select_clf.fit(train_data, labels)
-train_data = select_clf.transform(train_data,threshold=0.01)
-valid_data = select_clf.transform(valid_data,threshold=0.01)
-test_data = select_clf.transform(test_data,threshold=0.01)
-print(np.sort(select_clf.feature_importances_))
-print(train_data.shape)
+    train_data = select_clf.transform(train_data,threshold=my_mean )
+    valid_data = select_clf.transform(valid_data,threshold=my_mean )
+    test_data = select_clf.transform(test_data,threshold=my_mean)
 
-#exit(1)
+    print(train_data.shape)
+    # print(np.where(select_clf.feature_importances_ > my_mean))
+    # print(np.sort(select_clf.feature_importances_))
 
-# pca = PCA()
-# pca.fit(train_data)
-# print(pca.explained_variance_ratio_)
-# print(np.sum(pca.explained_variance_ratio_))
-#
-# exit(1)
-# train_data = pca.transform(train_data)
-# valid_data = pca.transform(valid_data)
-# test_data = pca.transform(test_data)
-
-
-######################### Make validation/test predictions
-
-n_features=train_data.shape[1]
-#gbt_features=int(n_features**0.5)
-gbt_features=n_features
-gbt_params=GBT_params(n_iterations=30000,depth=11, learning_rate=0.01,subsample_part=0.6,n_max_features=gbt_features,min_samples_split=8, min_samples_leaf=4)
-gbt_params.print_params()
-
-make_classification(gbt_params, train_data, labels, valid_data, test_data, 'res/sylvine_valid_001.predict', 'res/sylvine_test_001.predict')
-# forest_params=GBT_params(n_iterations=15000,depth=10, learning_rate=0.01,subsample_part=0.6,n_max_features=gbt_features,min_samples_split=10, min_samples_leaf=4)
-# make_classification_random_forest(gbt_params, train_data, labels, valid_data, test_data,  'res/sylvine_valid_001.predict', 'res/sylvine_test_001.predict')
-np.savetxt('res/sylvine.seed', np.array([np_seed]),"%d")
-
-print("build ended %d seconds" % (time.time() - start_time))
-
-exit(1)
-
-
-########################## Make cross validation
-gbt_params_begin=GBT_params(n_iterations=10000,depth=7, learning_rate=0.005,subsample_part=0.6,n_max_features=(n_features/2))
-gbt_params_mult_factor=GBT_params(n_iterations=1,depth=1, learning_rate=2,subsample_part=1,n_max_features=1)
-gbt_params_add_factor=GBT_params(n_iterations=3000,depth=1, learning_rate=0,subsample_part=1,n_max_features=5)
-gbt_params_num_iter=GBT_params(n_iterations=4,depth=4, learning_rate=4,subsample_part=1,n_max_features=3)
-#gbt_params_num_iter=GBT_params(n_iterations=1,depth=1, learning_rate=1,subsample_part=1,n_max_features=1)
-
-cv_folds=5
-(cv_res,cv_times)=make_cross_validation(train_data, labels, cv_folds, gbt_params_begin, gbt_params_mult_factor, gbt_params_add_factor, gbt_params_num_iter)
-
-print("Cross Validation is complete")
-print ("cv_res: ", cv_res)
-print("cv_times: ", cv_times)
-
-np.savetxt('res/sylvine.crossvalidation_res2', cv_res, '%1.5f')
-np.savetxt('res/sylvine.crossvalidation_times2', cv_times, '%1.5f')
-exit(1)
+    ######################### Make validation/test predictions
+    n_features=train_data.shape[1]
+    gbt_features=n_features
+    gbt_params=GBT_params(n_iterations=30000,depth=11, learning_rate=0.01,subsample_part=0.6,n_max_features=gbt_features,min_samples_split=8, min_samples_leaf=4)
+    gbt_params.print_params()
+    return make_classification(gbt_params, train_data, labels, valid_data, test_data)
