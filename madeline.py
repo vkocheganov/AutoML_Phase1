@@ -5,18 +5,12 @@ from sklearn.ensemble import ExtraTreesClassifier
 from sklearn import ensemble, linear_model
 from sklearn.cross_validation import KFold
 import time
-from calc_cv_scores import Calc_CV_ERROR
-from libs.libscores import *
-from libs.data_io import *
-import numpy
+import numpy as np
 
 from time import gmtime, strftime
-from calc_cv_scores import Calc_CV_ERROR,make_cross_validation
-from preprocess import Preprocess_data,GBT_params,Choose_variables
 from utils import make_classification,make_classification_random_forest
 print(strftime("%Y-%m-%d %H:%M:%S"))
-
-
+from preprocess import Preprocess_data,GBT_params,Choose_variables
 
 np.set_printoptions(suppress=True)
 

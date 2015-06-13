@@ -5,14 +5,10 @@ from sklearn.ensemble import ExtraTreesClassifier
 from sklearn import ensemble, linear_model
 from sklearn.cross_validation import KFold
 import time
-import numpy
-from libs.libscores import *
-from libs.data_io import *
-import numpy
+import numpy as np
 from sets import Set
 from time import gmtime, strftime
 
-from calc_cv_scores import Calc_CV_ERROR,make_cross_validation
 from preprocess import Preprocess_data,GBT_params,Choose_variables
 from utils import make_classification,make_classification_random_forest
 

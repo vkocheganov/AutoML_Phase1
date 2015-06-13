@@ -3,17 +3,13 @@ __author__ = 'vmkochegvirtual'
 from sklearn.decomposition import PCA
 from sklearn.ensemble import ExtraTreesClassifier
 from sklearn import ensemble, linear_model
-from sklearn.cross_validation import KFold
 import time
-from calc_cv_scores import Calc_CV_ERROR
-from libs.libscores import *
-from libs.data_io import *
+import numpy as np
 
 from time import gmtime, strftime
-from calc_cv_scores import Calc_CV_ERROR,make_cross_validation
-from preprocess import Preprocess_data,GBT_params,Choose_variables
 from utils import make_classification,make_classification_random_forest
 print(strftime("%Y-%m-%d %H:%M:%S"))
+from preprocess import Preprocess_data,GBT_params,Choose_variables
 
 def jasmine_predict(train_data,labels,valid_data,test_data,output_dir):
     print("make jasmine prediction\n")

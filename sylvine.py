@@ -1,24 +1,16 @@
 __author__ = 'vmkochegvirtual'
 from sklearn.decomposition import PCA
-from sets import Set
-#
-#order = christine, jasmine.py, madeline, philippine, sylvine
+
 from sklearn import ensemble, linear_model
-from sklearn.cross_validation import KFold
 from sklearn.decomposition import PCA
 from sklearn.ensemble  import ExtraTreesClassifier
 import time
-import numpy
-from calc_cv_scores import Calc_CV_ERROR
-from libs.libscores import *
-from libs.data_io import *
+import numpy as np
 
 from time import gmtime, strftime
-from calc_cv_scores import Calc_CV_ERROR
-from preprocess import Preprocess_data,GBT_params,Choose_variables
 from utils import make_classification,make_classification_random_forest
-from calc_cv_scores import make_cross_validation
 print(strftime("%Y-%m-%d %H:%M:%S"))
+from preprocess import Preprocess_data,GBT_params,Choose_variables
 
 def sylvine_predict(train_data,labels,valid_data,test_data,output_dir):
     print("make sylvine prediction\n")

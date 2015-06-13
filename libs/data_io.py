@@ -15,9 +15,10 @@
 import numpy as np
 import os
 import shutil
-from scipy.sparse import * # used in data_binary_sparse
+from scipy.sparse import * # used in data_binary_sparse 
 from zipfile import ZipFile, ZIP_DEFLATED
 from contextlib import closing
+import data_converter
 from sys import stderr
 from sys import version
 from glob import glob as ls
@@ -25,9 +26,6 @@ from os import getcwd as pwd
 from pip import get_installed_distributions as lib
 import yaml
 from shutil import copy2
-
-from libs import data_converter
-
 
 # ================ Small auxiliary functions =================
 

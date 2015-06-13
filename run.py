@@ -150,11 +150,16 @@ default_output_dir = root_dir + "scoring_input0/res"
 version = 1.1 
 # General purpose functions
 
-from christine import christine_predict
-from jasmine import jasmine_predict
-import os
 from sys import argv, path
 import sys
+sys.path.append("libs")
+from christine import christine_predict
+from jasmine import jasmine_predict
+from madeline import madeline_predict
+from philippine import philippine_predict
+from sylvine import sylvine_predict
+
+import os
 import numpy as np
 import time
 overall_start = time.time()
@@ -174,7 +179,6 @@ res_dir = os.path.join(run_dir, "res")
 # Our libraries  
 path.append (run_dir)
 path.append (lib_dir)
-sys.path.append("libs")
 import data_io                       # general purpose input/output functions
 from data_io import vprint           # print only in verbose mode
 from data_manager import DataManager # load/save data and get info about them
