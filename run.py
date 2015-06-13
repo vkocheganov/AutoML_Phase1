@@ -189,8 +189,7 @@ if debug_mode >= 4 or running_on_codalab: # Show library version and directory s
     data_io.show_dir(run_dir)
 
 # =========================== BEGIN PROGRAM ================================
-print("hello!\n")
-if __name__=="__main__" and debug_mode<4:	
+if __name__=="__main__" and debug_mode<4:
     #### Check whether everything went well (no time exceeded)
     execution_success = True
     
@@ -274,11 +273,15 @@ if __name__=="__main__" and debug_mode<4:
         print (valid_data.shape)
         print (test_data.shape)
         time_budget = time_budget - time_spent # Remove time spent so far
-        start = time.time()              # Reset the counter
         time_spent = 0                   # Initialize time spent learning
         if basename in ["christine","jasmine","madeline","philippine","sylvine"]:
+            continue
             (Y_valid, Y_test) = locals()[basename+"_predict"](train_data,labels, valid_data, test_data,output_dir)
             print "christine processed!\n"
+        elif D.info['task'] == 'multiclass.classification':
+            print "multiclass!!!!!!!!!\n"
+            continue
+            (Y_valid, Y_test) = multiclass_predict(train_data,labels, valid_data, test_data,output_dir, D.info['time_budget'])
         time_spent = time.time() - start
 
         vprint( verbose,  "[+] Prediction success, time spent so far %5.2f sec" % (time.time() - start))

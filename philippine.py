@@ -1,18 +1,14 @@
 __author__ = 'vmkochegvirtual'
 
-from sklearn.decomposition import PCA
 from sklearn.ensemble import ExtraTreesClassifier
-from sklearn import ensemble, linear_model
+from sklearn import ensemble
 import time
 import numpy as np
 
 from time import gmtime, strftime
-from utils import make_classification,make_classification_random_forest
+from utils import make_classification
 print(strftime("%Y-%m-%d %H:%M:%S"))
-from preprocess import Preprocess_data,GBT_params,Choose_variables
-
-
-np.set_printoptions(suppress=True)
+from preprocess import GBT_params
 
 def philippine_predict(train_data,labels,valid_data,test_data,output_dir):
     print("make philippine prediction\n")
@@ -39,6 +35,6 @@ def philippine_predict(train_data,labels,valid_data,test_data,output_dir):
     n_features=train_data.shape[1]
     #gbt_features=n_features
     gbt_features=int(n_features**0.5)
-    gbt_params=GBT_params(n_iterations=15000,depth=10, learning_rate=0.01,subsample_part=0.6,n_max_features=gbt_features,min_samples_split=6, min_samples_leaf=3)
+    gbt_params=GBT_params(n_iterations=30000,depth=10, learning_rate=0.01,subsample_part=0.6,n_max_features=gbt_features,min_samples_split=6, min_samples_leaf=3)
     gbt_params.print_params()
     return make_classification(gbt_params, train_data, labels, valid_data, test_data)

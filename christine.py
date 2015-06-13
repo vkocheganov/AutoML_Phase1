@@ -1,20 +1,16 @@
 __author__ = 'vmkochegvirtual'
 
-from sklearn.decomposition import PCA
 from sklearn.ensemble import ExtraTreesClassifier
-from sklearn import ensemble, linear_model
-from sklearn.cross_validation import KFold
+from sklearn import ensemble
 import time
 import numpy as np
 from sets import Set
 from time import gmtime, strftime
 
-from preprocess import Preprocess_data,GBT_params,Choose_variables
-from utils import make_classification,make_classification_random_forest
+from preprocess import GBT_params
+from utils import make_classification
 
 print(strftime("%Y-%m-%d %H:%M:%S"))
-
-np.set_printoptions(suppress=True)
 
 def christine_predict(train_data,labels,valid_data,test_data,output_dir):
     print("make christine prediction\n")
@@ -33,13 +29,11 @@ def christine_predict(train_data,labels,valid_data,test_data,output_dir):
 
     print(my_mean)
     print(train_data.shape)
-    # print(np.sort(select_clf.feature_importances_))
-    # print(np.sort(select_clf.feature_importances_[np.where(select_clf.feature_importances_ > 0)]))
 
     ######################### Make validation/test predictions
     n_features=train_data.shape[1]
     gbt_features=int(n_features**0.5)
-    gbt_params=GBT_params(n_iterations=20000,depth=10, learning_rate=0.01,subsample_part=0.6,n_max_features=gbt_features,min_samples_split=4, min_samples_leaf=2)
+    gbt_params=GBT_params(n_iterations=30000,depth=10, learning_rate=0.01,subsample_part=0.6,n_max_features=gbt_features,min_samples_split=4, min_samples_leaf=2)
     gbt_params.print_params()
 
     return make_classification(gbt_params, train_data, labels, valid_data, test_data)
